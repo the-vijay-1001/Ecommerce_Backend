@@ -1,39 +1,48 @@
-import bodyParser from "body-parser";
-import model from "./models/index.js";
-import register from "./routes/index.js";
-import cors from "cors";
-export default class Bootstrap {
+import bodyParser from 'body-parser';
+import models from './models'
+import cors from 'cors';
+import register from './routes/index.js';
+export class Bootstrap {
     constructor(app) {
         this.app = app;
+        this.connectDB();
+        this.middlewares();
+        this.routes();
         this.start();
-        this.dbConnection();
-        this.route();
     }
-    start() {
+
+    middlewares() {
         const { app } = this;
-        const port = app.get("port");
-        app.use(bodyParser.urlencoded({ extended: true }));
         app.use(bodyParser.json());
-        const server = app.listen(port, () => {
-            console.log("server started ....." + port);
-        })
+        app.use(bodyParser.urlencoded({extended:true}));
+        app.use(cors());
     }
 
-    dbConnection() {
-        const { sequelize } = model;
-        sequelize?.authenticate().then(result => {
-            console.log("database connected..........");
-        }).catch(err => {
-            console.log(err);
-        })
+    connectDB() {
+        const { sequelize } = models;
+        sequelize.authenticate()
+            .then(() => {
+                console.log('database connected');
+                sequelize.sync()
+                    .then(() => {
+                        console.log('Database is sync')
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }
 
-    middleware() {
-        const { app } = this;
-        
-    }
-
-    route() {
+    routes() {
         register(this.app);
+     }
+
+    start() {
+        this.app.listen(process.env.PORT, () => {
+            console.log('Server Started on 3001');
+        })
     }
 }

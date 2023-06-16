@@ -1,4 +1,4 @@
-import Joi from "joi";
+import Joi from 'joi';
 
 const userCreateSchema = Joi.object({
     email: Joi.string().email().required(),
@@ -8,10 +8,6 @@ const userCreateSchema = Joi.object({
         .min(10)
         .max(10)
         .required(),
-    role: Joi.string()
-       .required(),
-    status: Joi.boolean()
-        .required()
 })
 
 const loginSchema = Joi.object({

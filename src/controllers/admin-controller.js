@@ -18,7 +18,7 @@ export default {
 
     async forgotPassword(req, res, next) {
         try {
-            const result = await adminRepository.forgotPassword(req.body);
+            const result = await adminRepository.forgotPassword(req);
             console.log(result);
             if (result.status)
                 return res.status(HttpStatus.OK).json(result);

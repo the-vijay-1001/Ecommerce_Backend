@@ -8,15 +8,15 @@ const { user } = models;
 
 export default {
     async signIn(adminObj) {
-            let aObj = await user.scope('admin').findOne({ where: { email: adminObj.email } });
-            if(!aObj)
-            return {status:false,msg:"Email Not registered as admin"};
-            aObj = aObj.dataValues;
-            if (await this.comparePassword(adminObj.password, aObj.password)) {
-                const token = jwt.createToken({ email: aObj.email });
-                return { status: true, msg: "SignIn Success", token };
-            }
-            return { status: false, msg: "Passwords Did'nt Matched" }
+        let aObj = await user.scope('admin').findOne({ where: { email: adminObj.email } });
+        if (!aObj)
+            return { status: false, msg: "Email Not registered as admin" };
+        aObj = aObj.dataValues;
+        if (await this.comparePassword(adminObj.password, aObj.password)) {
+            const token = jwt.createToken({ email: aObj.email });
+            return { status: true, msg: "SignIn Success", token };
+        }
+        return { status: false, msg: "Passwords Did'nt Matched" }
     },
     async generateEncryptedPassword(password) {
         try {
@@ -40,7 +40,7 @@ export default {
         try {
             const salt = await bcrypt.genSalt();
             adminObj.password = await bcrypt.hash(adminObj.password, salt);
-           user.create(adminObj);
+            user.create(adminObj);
         } catch (err) {
             console.log(err)
             return { status: false, msg: "Internal Server Error" }
@@ -133,30 +133,51 @@ export default {
             // return { status: false, msg: "Internal Server Error" }
         }
     },
-    async forgotPasword(req) {
+    async forgotPassword(req) {
         try {
-            const existingAdmin = await user.scope('admin').findOne({ email: adminObj.email });
-
-            if (!existingAdmin)
-                return { status: false, msg: "No User Found" }
-
-            const otp = await this.generateOtp(existingAdmin);
-
+            console.log(req.headers.host);
+            const forgotUser = await user.scope('admin').findOne({ where: { email: req.body.email } });
+            req.forgotUser = forgotUser
+            const token = await this.generatePasswordResetToken(req);
+            
             const data = {
-                to: existingAdmin.email,
-                otp,
+                to: forgotUser.email,
+                link:`http://${req.headers.hostname}/reset-password/${token.passwordResetToken}`,
                 msg: "Your Otp"
             }
             try {
-                await email.sendOtp(data)
+                await email.sendLink(data)
                 return { status: true, msg: "Otp sent successfully to your resgistered email address ..." };
 
             } catch (err) {
                 return { status: false, msg: "Something went wrong!! Try again" }
             }
+
         } catch (err) {
             console.log(err);
             return { status: false, msg: "Internal Server Error" }
         }
-    }
+    },
+    async generatePasswordResetToken(req) {
+        const { forgotUser } = req;
+        try {
+            const token = this.generateRandomString(32);
+            const userData = { passwordResetToken: token };
+            await forgotUser.update(userData);
+            return userData;
+        } catch (error) {
+            logMessage.accountErrorMessage('resetPasswordToken', { error });
+            throw Error(error);
+        }
+    },
+    generateRandomString: (length) => {
+        const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        let output = '';
+
+        for (let x = 0; x < length; x++) {
+            const i = Math.floor(Math.random() * 62);
+            output += chars.charAt(i);
+        }
+        return output + Date.now();
+    },
 }

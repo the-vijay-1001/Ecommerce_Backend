@@ -13,5 +13,5 @@ const {validateMiddleware} = middlewares;
 
 
 router.post('/signup',validateMiddleware({schema:userValidations.userProfileUpdateSchema}),userController.signUp);
-router.post('/signIn',userController.signIn);
+router.post('/signin',userController.signIn);
 export default router;

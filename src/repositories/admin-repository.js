@@ -14,7 +14,7 @@ export default {
         aObj = aObj.dataValues;
         if (await this.comparePassword(adminObj.password, aObj.password)) {
             const token = jwt.createToken({ email: aObj.email });
-            return { status: true, msg: "SignIn Success", token };
+            return { status: true, msg: "SignIn Success", token , admin:aObj };
         }
         return { status: false, msg: "Passwords Did'nt Matched" }
     },
@@ -139,10 +139,10 @@ export default {
             const forgotUser = await user.scope('admin').findOne({ where: { email: req.body.email } });
             req.forgotUser = forgotUser
             const token = await this.generatePasswordResetToken(req);
-            
+
             const data = {
                 to: forgotUser.email,
-                link:`http://${req.headers.hostname}/reset-password/${token.passwordResetToken}`,
+                link: `${req.headers.hostname}/reset-password/${token.passwordResetToken}`,
                 msg: "Your Otp"
             }
             try {
@@ -180,4 +180,37 @@ export default {
         }
         return output + Date.now();
     },
+    async resetPassword(req) {
+        try {
+            const admin = await user.scope('admin').findOne({ where: { passwordResetToken: req.body.token } });
+            if(!admin)
+            return {status:false, msg:"Invalid Token"}
+            const password = await this.generateEncryptedPassword(req.body.password);
+            admin.password = password;
+            admin.passwordResetToken = null
+            await admin.save();
+            return { status: true, msg: "Password reseted succesfully" }
+        } catch (err) {
+            console.log(err);
+            return { status: false, msg: "Something went wrong" }
+        }
+    },
+    async updateProfileData(req) {
+        try {
+            console.log(req.file);
+            console.log(req.files);
+            const userobj  = {...req.body};
+            const admin = await user.scope('admin').findOne({ where: { id : userobj.id } });
+            if(!admin)
+            return {status:false, msg:"Invalid Request"}
+            admin.name = userobj.name  ? userobj.name : admin.name;
+            admin.contact = userobj.contact ? userobj.contact : admin.contact;
+            admin.email = userobj.email ? userobj.email: admin.email;
+            await admin.save();
+            return { status: true, msg: "Profile updated succesfully" }
+        } catch (err) {
+            console.log(err);
+            return { status: false, msg: "Something went wrong" }
+        }
+    }
 }

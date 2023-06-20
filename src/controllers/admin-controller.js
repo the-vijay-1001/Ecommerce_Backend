@@ -52,6 +52,28 @@ export default {
             console.log(err)
             next(err);
         }
-    }
+    },
+    async resetPassword(req, res, next) {
+        try {
+            const result = await  adminRepository.resetPassword(req);
+            if (result.status)
+                return res.status(HttpStatus.OK).json(result);
+           return res.status(HttpStatus.BAD_REQUEST).json(result);
+        } catch (err) {
+            console.log(err)
+            next(err);
+        }
+    },
+    async updateProfile(req, res, next) {
+        try {
+            const result = await  adminRepository.updateProfileData(req);
+            if (result.status)
+                return res.status(HttpStatus.OK).json(result);
+           return res.status(HttpStatus.BAD_REQUEST).json(result);
+        } catch (err) {
+            console.log(err)
+            next(err);
+        }
+    },
 }
 

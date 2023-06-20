@@ -19,4 +19,8 @@ export default {
   },
   jwtSecret: process.env.JWT_SECRET,
   jwtExpireIn: process.env.JWT_EXPIRE_IN,
+
+  app:{
+    url:process.env.APP_URL
+  }
 }

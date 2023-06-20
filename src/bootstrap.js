@@ -2,6 +2,7 @@ import bodyParser from 'body-parser';
 import models from './models'
 import cors from 'cors';
 import register from './routes/index.js';
+import express from 'express';
 export class Bootstrap {
     constructor(app) {
         this.app = app;
@@ -15,7 +16,7 @@ export class Bootstrap {
         const { app } = this;
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({extended:true}));
-        app.use(cors());
+        app.use(cors());app.use('/public', express.static(`${__dirname}/../public`));
     }
 
     connectDB() {

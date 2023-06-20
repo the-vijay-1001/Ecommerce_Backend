@@ -14,7 +14,7 @@ export default {
         aObj = aObj.dataValues;
         if (await this.comparePassword(adminObj.password, aObj.password)) {
             const token = jwt.createToken({ email: aObj.email });
-            return { status: true, msg: "SignIn Success", token , admin:aObj };
+            return { status: true, msg: "SignIn Success", token, admin: aObj };
         }
         return { status: false, msg: "Passwords Did'nt Matched" }
     },
@@ -183,8 +183,8 @@ export default {
     async resetPassword(req) {
         try {
             const admin = await user.scope('admin').findOne({ where: { passwordResetToken: req.body.token } });
-            if(!admin)
-            return {status:false, msg:"Invalid Token"}
+            if (!admin)
+                return { status: false, msg: "Invalid Token" }
             const password = await this.generateEncryptedPassword(req.body.password);
             admin.password = password;
             admin.passwordResetToken = null
@@ -197,15 +197,14 @@ export default {
     },
     async updateProfileData(req) {
         try {
-            console.log(req.file);
-            console.log(req.files);
-            const userobj  = {...req.body};
-            const admin = await user.scope('admin').findOne({ where: { id : userobj.id } });
-            if(!admin)
-            return {status:false, msg:"Invalid Request"}
-            admin.name = userobj.name  ? userobj.name : admin.name;
+            const userobj = { ...req.body };
+            const admin = await user.scope('admin').findOne({ where: { id: userobj.id } });
+            if (!admin)
+                return { status: false, msg: "Invalid Request" }
+            admin.name = userobj.name ? userobj.name : admin.name;
             admin.contact = userobj.contact ? userobj.contact : admin.contact;
-            admin.email = userobj.email ? userobj.email: admin.email;
+            admin.email = userobj.email ? userobj.email : admin.email;
+            admin.profileImageURL = userobj.profileImageURL ? userobj.profileImageURL : admin.profileImageURL;
             await admin.save();
             return { status: true, msg: "Profile updated succesfully" }
         } catch (err) {

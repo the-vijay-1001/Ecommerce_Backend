@@ -18,7 +18,7 @@ export default {
         try {
             const data = await accoutnRepositories.vendorSignin(request);
             if (data?.token){
-                return response.status(HttpStatus.OK).json({ token:data.token, message: 'SIGNIN SUCCESSS......' });
+                return response.status(HttpStatus.OK).json({ data, message: 'SIGNIN SUCCESSS......' });
             }
             return response.status(HttpStatus.BAD_REQUEST).json(data || { message: 'SOMETHING WENT WRONG.....' });
         } catch (error) {

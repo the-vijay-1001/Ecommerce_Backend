@@ -11,6 +11,8 @@ export default {
             );
             bodyData.password = hashPassword;
             bodyData.role = constant.common.ROLE.VENDOR;
+            console.clear();
+            console.log(bodyData);
             const userData = await user.create(bodyData);
             return userData;
     },

@@ -26,10 +26,10 @@ const userProfileUpdateSchema = Joi.object({
   password: Joi.string()  
     .min(6)
     .label('Password')
-    .required(),  
-    
-  phoneNumber: Joi.number()
-    .required()
+    .required(),
+  contact : Joi.string()
+  .min(10)
+  .max(10)
 });
 export default {
   userProfileUpdateSchema,

@@ -16,4 +16,5 @@ router.post('/vendor/signup',
 router.post('/vendor/signin',
     validateMiddleware({ schema: accountValidator.loginSchema }), accountController.vendorSignin);
     
+router.post("/vendor/update",accountController.vendorUpdateProfile);
 export default router;

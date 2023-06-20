@@ -25,5 +25,19 @@ export default {
             next(error)
         }
     },
+    async vendorUpdateProfile(request, response, next) {
+        try {
+            console.log("123" );
+            const result = await accoutnRepositories.vendorUpdateProfile(request);
+            console.log("{}}}}}}}}}}}}}}}}}")
+            if (result.status){
+                return response.status(HttpStatus.OK).json({result});
+            }
+            return response.status(HttpStatus.BAD_REQUEST).json(result || { message: 'SOMETHING WENT WRONG.....' });
+        } catch (error) {
+            next(error)
+        }
+    },
+    
     
 }

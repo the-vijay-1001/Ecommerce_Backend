@@ -3,6 +3,7 @@ import account from './account.js'
 import admin from './admin'
 import media from './media'
 import user from "./user.js"
+import product from "./product.js";
 import HttpStatus from 'http-status';
 
 const router = Router();
@@ -12,7 +13,8 @@ const register = (app) => {
         account,
         admin,
         media,
-        user
+        user,
+        product
     ])
 
     app.use((error, req, res, next) => {

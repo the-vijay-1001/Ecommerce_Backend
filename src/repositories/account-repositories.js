@@ -11,8 +11,6 @@ export default {
         );
         bodyData.password = hashPassword;
         bodyData.role = constant.common.ROLE.VENDOR;
-        console.clear();
-        console.log(bodyData);
         const userData = await user.create(bodyData);
         return userData;
     },
@@ -49,15 +47,18 @@ export default {
     },
     async vendorUpdateProfile(request) {
             const vendorobj = { ...request.body };
+            console.log("000000000000000");
             console.log(vendorobj);
-            const vendor = await user.scope('vendors').findOne({ where: { id: vendorobj.bodyData.id } });
+            const vendor = await user.scope('vendors').findOne({ where: { id: vendorobj?.bodyData?.id } });
             if (!vendor) {
                 return { status: false, msg: "Invalid Request" }
             }
-            user.name = userobj.name ? vendorobj.name : user.name;
-            user.contact = userobj.contact ? vendorobj.contact : user.contact;
-            user.email = userobj.email ? vendorobj.email : user.email;
-            await user.save();
-            return { status: true, msg: "Profile updated succesfully" }      
+            vendor.name = vendorobj.bodyData.name ? vendorobj.bodyData.name : user.name;
+            vendor.contact = vendorobj.bodyData.contact ? vendorobj.bodyData.contact : user.contact;
+            vendor.email = vendorobj.bodyData.email ? vendorobj.bodyData.email : user.email;
+            vendor.profileImageURL = vendorobj.bodyData.profileImageURL ? vendorobj.bodyData.profileImageURL : user.profileImageURL;
+            await vendor.save();
+            const { ...userData } = vendor;
+            return {userData, status: true, msg: "Profile updated succesfully" }      
     },
 }

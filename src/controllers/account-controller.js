@@ -17,6 +17,8 @@ export default {
     async vendorSignin(request, response, next) {
         try {
             const data = await accoutnRepositories.vendorSignin(request);
+            console.log("fkdkljlk");
+            console.log(data);
             if (data?.token){
                 return response.status(HttpStatus.OK).json({ data, message: 'SIGNIN SUCCESSS......' });
             }
@@ -27,11 +29,11 @@ export default {
     },
     async vendorUpdateProfile(request, response, next) {
         try {
-            console.log("123" );
+            
             const result = await accoutnRepositories.vendorUpdateProfile(request);
-            console.log("{}}}}}}}}}}}}}}}}}")
+            
             if (result.status){
-                return response.status(HttpStatus.OK).json({result});
+                return response.status(HttpStatus.OK).json(result.userData.dataValues);
             }
             return response.status(HttpStatus.BAD_REQUEST).json(result || { message: 'SOMETHING WENT WRONG.....' });
         } catch (error) {

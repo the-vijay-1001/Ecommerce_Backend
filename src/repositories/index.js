@@ -3,11 +3,13 @@ import mediaRepository from './media-repository.js';
 import adminRepository from './admin-repository.js';
 import userRepository from './user-repository.js';
 import productRepositories from './product-repositories.js';
+import cartRepositories from './cart-repositories.js';
 
 export default {
     accoutnRepositories,
     mediaRepository,
     adminRepository,
     userRepository,
-    productRepositories
+    productRepositories,
+    cartRepositories
 }

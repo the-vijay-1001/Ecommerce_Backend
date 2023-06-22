@@ -40,7 +40,11 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: new Date()
         }
     });
-
+    Product.associate=(models)=>{
+        Product.hasMany(models.Cart,{
+            foreignKey : "productId"
+        })
+    };
     return Product;
 }
 

@@ -16,7 +16,6 @@ const register = (app) => {
         user,
         product
     ])
-
     app.use((error, req, res, next) => {
         console.log(error)
        return  res.status(HttpStatus.BAD_REQUEST).json({

@@ -3,9 +3,11 @@ const { product } = models;
 export default {
     async uploadProduct(request) {
         const bodyData = request.body;
-        console.log("8888888888888")
-        console.log(bodyData);
         const productData = await product.create(bodyData);
         return productData;
     },
+    async productList(){
+        const products=await product.findAll();
+        return products;
+    }
 }

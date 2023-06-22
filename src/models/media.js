@@ -26,5 +26,11 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: 'pending',
         },
     },)
+
+    media.associate=(models)=>{
+        media.hasOne(models.productImage,{
+            foreignKey:"imageId"
+        })
+    }
     return media;
 }

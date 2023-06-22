@@ -22,9 +22,6 @@ module.exports = (sequelize, DataTypes) => {
         price:{
             type:DataTypes.INTEGER
         },
-        imageUrl:{
-            type:DataTypes.STRING
-        },
         stock:{
             type:DataTypes.INTEGER
         },
@@ -41,6 +38,10 @@ module.exports = (sequelize, DataTypes) => {
         }
     });
 
+    Product.associate=(models)=>{
+        Product.hasMany(models.productImage,{
+            foreignKey : "productId"
+        })
+    }
     return Product;
 }
-

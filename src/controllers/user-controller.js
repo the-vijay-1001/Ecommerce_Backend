@@ -23,15 +23,28 @@ export default {
       next(error);
     }
   },
+
   async signIn(req, res, next) {
     try {
       const data = await userRepository.signin(req);
       if (data?.token) {
-        return res.status(httpStatus.OK).json({ token: data.token, message: 'SIGNIN SUCCESSS......' });
+        return res.status(httpStatus.OK).json({data,token: data.token, message: 'SIGNIN SUCCESSS......' });
       }
       return res.status(httpStatus.BAD_REQUEST).json(data || { message: 'SOMETHING WENT WRONG.....' });
     } catch (error) {
       next(error)
     }
-  }
+  },
+
+    async userUpdateProfile(request, response, next) {
+        try {
+            const result = await userRepository.userUpdateProfile(request);
+            if (result.status){
+                return response.status(httpStatus.OK).json(result.userData.dataValues);
+            }
+            return response.status(httpStatus.BAD_REQUEST).json(result || { message: 'SOMETHING WENT WRONG.....' });
+        } catch (error) {
+            next(error)
+        }
+    },
 }

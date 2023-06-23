@@ -45,16 +45,14 @@ export default {
     },
     async vendorUpdateProfile(request) {
             const vendorobj = { ...request.body };
-            console.log("000000000000000");
-            console.log(vendorobj);
-            const vendor = await user.scope('vendors').findOne({ where: { id: vendorobj?.bodyData?.id } });
+            const vendor = await user.scope('vendors').findOne({ where: { id: vendorobj?.id } });
             if (!vendor) {
                 return { status: false, msg: "Invalid Request" }
             }
-            vendor.name = vendorobj.bodyData.name ? vendorobj.bodyData.name : user.name;
-            vendor.contact = vendorobj.bodyData.contact ? vendorobj.bodyData.contact : user.contact;
-            vendor.email = vendorobj.bodyData.email ? vendorobj.bodyData.email : user.email;
-            vendor.profileImageURL = vendorobj.bodyData.profileImageURL ? vendorobj.bodyData.profileImageURL : user.profileImageURL;
+            vendor.name = vendorobj.name ? vendorobj.name : user.name;
+            vendor.contact = vendorobj.contact ? vendorobj.contact : user.contact;
+            vendor.email = vendorobj.email ? vendorobj.email : user.email;
+            vendor.profileImageURL = vendorobj.profileImageURL ? vendorobj.profileImageURL : user.profileImageURL;
             await vendor.save();
             const { ...userData } = vendor;
             return {userData, status: true, msg: "Profile updated succesfully" }      

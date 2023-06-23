@@ -29,7 +29,7 @@ export default {
     },
     async vendorUpdateProfile(request, response, next) {
         try {
-            
+                
             const result = await accoutnRepositories.vendorUpdateProfile(request);
             
             if (result.status){

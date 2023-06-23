@@ -5,6 +5,7 @@ import media from './media'
 import user from "./user.js"
 import product from "./product.js";
 import HttpStatus from 'http-status';
+import cart from './cart.js';
 
 const router = Router();
 const register = (app) => {
@@ -14,7 +15,8 @@ const register = (app) => {
         admin,
         media,
         user,
-        product
+        product,
+        cart
     ])
     app.use((error, req, res, next) => {
         console.log(error)

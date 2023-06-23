@@ -21,13 +21,13 @@ module.exports = (sequelize, DataTypes) => {
     //     foreignKey: "userId"
     // });
     Cart.associate=(models)=>{
-
         Cart.hasOne(models.user,{
-
-            foreignKey:"userId"
-
+            foreignKey:"userId" 
         })
-
+        Cart.hasMany(models.product, {
+            foreignKey: "cartId"
+          });
+          
     }
     return Cart;
 }

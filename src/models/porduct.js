@@ -4,29 +4,29 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         },
-        vendorId:{
-            type:DataTypes.STRING,
-            allowNull:false
+        vendorId: {
+            type: DataTypes.STRING,
+            allowNull: false
         },
-        category:{
-            type:DataTypes.STRING,
+        category: {
+            type: DataTypes.STRING,
         },
-        description:{
-            type:DataTypes.STRING,
-            allowNull:false
+        description: {
+            type: DataTypes.STRING,
+            allowNull: false
         },
-        brand:{
-            type:DataTypes.STRING,
-            allowNull:false
+        brand: {
+            type: DataTypes.STRING,
+            allowNull: false
         },
-        price:{
-            type:DataTypes.INTEGER
+        price: {
+            type: DataTypes.INTEGER
         },
-        stock:{
-            type:DataTypes.INTEGER
+        stock: {
+            type: DataTypes.INTEGER
         },
-        discountPercentage:{
-            type:DataTypes.INTEGER
+        discountPercentage: {
+            type: DataTypes.INTEGER
         },
         createdAt: {
             type: DataTypes.DATE,
@@ -37,10 +37,15 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: new Date()
         }
     });
-    Product.associate=(models)=>{
-        Product.hasMany(models.Cart,{
-            foreignKey : "productId"
+    Product.associate = (models) => {
+        Product.hasMany(models.cart, {
+            foreignKey: "productId"
         })
     };
+    Product.associate = (models) => {
+        Product.hasMany(models.productImage, {
+            foreignKey: "productId"
+        })
+    }
     return Product;
 }

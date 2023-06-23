@@ -14,7 +14,6 @@ export default {
         const userData = await user.create(bodyData);
         return userData;
     },
-
     async vendorSignin(request) {
         const { email, password } = request.body;
         const havingEmail = await user.scope('vendors').findOne({ where: { email: email } });
@@ -28,7 +27,6 @@ export default {
         }
         return { status: false, msg: "No Vendor Found" };
     },
-
     async compareUserPassword(password, hashPassword) {
         let isPasswordMatch = '';
         if (password && hashPassword) {

@@ -5,10 +5,18 @@ const { productRepositories } = repositories;
 export default {
     async uploadProduct(request, response, next) {
         try {
+            let res;
             const result = await productRepositories.uploadProduct(request);
             if (result) {
-                // productRepositories.uploadProductImage(result.dataValues.id);
-                return response.status(httpStatus.OK).json({ result, message: 'Product Uploaded........' });
+                let productId = result.dataValues.id;
+                for (let i = 0; i <= request.body.imageIdArray.length - 1; i++) {
+                    let imageId = request.body.imageIdArray[i];
+                    res = await productRepositories.uploadProductImage({ productId, imageId });
+                }
+
+                if (res) {
+                    return response.status(httpStatus.OK).json({ result, message: 'Product Uploaded........' });
+                }
             }
             return response.status(httpStatus.BAD_REQUEST).json({ message: 'SOMETHING WENT WRONG.....' });
         } catch (error) {

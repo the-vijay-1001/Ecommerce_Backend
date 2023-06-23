@@ -1,8 +1,9 @@
 import models from "../models";
-const { product ,productImages} = models;
+const { product ,productImage } = models;
 export default {
     async uploadProduct(request) {
         const bodyData = request.body;
+        console.log(bodyData);
         const productData = await product.create(bodyData);
         return productData;
     },
@@ -11,8 +12,9 @@ export default {
         return products;
     },
     async uploadProductImage(request) {
-        const bodyData = request.body;
-        const productImage = await productImages.create(bodyData);
-        return productImage;
+        const {imageId } = request;
+        console.log(imageId);
+        const productImages = await productImage.create(request);
+        return productImages;
     },
 }

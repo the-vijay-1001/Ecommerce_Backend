@@ -7,24 +7,21 @@ export default {
     async saveMedia(req) {
         try {
             const { files, params } = req;
-            var baseUrl;
-            const result = await Promise.all(
-               await files.map(async (file, index) => {
-                 baseUrl = `${config.app.url}\\public\\uploads\\${params.mediaType}\\${params.mediaFor}\\${file.filename}`;
-                  return  await media.create({
-                        name: file.filename,
-                        mediaType: params.mediaType,
-                        mediaFor: params.mediaFor,
-                        baseUrl,
-                        basePath: `public\\uploads\\${params.mediaType}\\${params.mediaFor}\\${file.filename}`
-                    })
-                })
-            )
-            
-            return {status:true,msg:'Files Saved Successfully' , baseUrl}
+            const file = files[0];
+            var basePath = `public\\uploads\\${params.mediaType}\\${params.mediaFor}\\${file.filename}`;
+            const result = await media.create({
+                name: file.filename,
+                mediaType: params.mediaType,
+                mediaFor: params.mediaFor,
+                basePath
+            })
+
+            const baseUrl = `${config.app.url}/${basePath}`
+
+            return { status: true, msg: 'Files Saved Successfully', baseUrl, id: result.dataValues.id }
         } catch (err) {
             console.log(err);
-            return {status:false,msg:'Something went wrong !! Try again . . .'}
+            return { status: false, msg: 'Something went wrong !! Try again . . .' }
         }
     }
 }

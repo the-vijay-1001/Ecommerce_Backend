@@ -1,10 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
-    const Cart = sequelize.define("cart",{
-        userId:{
+    const Cart = sequelize.define("cart", {
+        userId: {
             type: DataTypes.INTEGER,
             allowNull: false
         },
-        productId:{
+        productId: {
             type: DataTypes.INTEGER,
             allowNull: false
         },
@@ -20,14 +20,10 @@ module.exports = (sequelize, DataTypes) => {
     // Cart.belongsTo(models.User, {
     //     foreignKey: "userId"
     // });
-    Cart.associate=(models)=>{
-        Cart.hasOne(models.user,{
-            foreignKey:"userId" 
+    Cart.associate = (models) => {
+        Cart.hasOne(models.user, {
+            foreignKey: "userId"
         })
-        Cart.hasMany(models.product, {
-            foreignKey: "cartId"
-          });
-          
     }
     return Cart;
 }

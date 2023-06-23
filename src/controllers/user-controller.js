@@ -27,7 +27,7 @@ export default {
     try {
       const data = await userRepository.signin(req);
       if (data?.token) {
-        return res.status(httpStatus.OK).json({ token: data.token, message: 'SIGNIN SUCCESSS......' });
+        return res.status(httpStatus.OK).json({ data, message: 'SIGNIN SUCCESSS......' });
       }
       return res.status(httpStatus.BAD_REQUEST).json(data || { message: 'SOMETHING WENT WRONG.....' });
     } catch (error) {

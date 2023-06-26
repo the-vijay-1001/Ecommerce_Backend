@@ -1,5 +1,5 @@
 import models from "../models";
-const { product ,productImage } = models;
+const { product ,productImage,media } = models;
 export default {
     async uploadProduct(request) {
         const bodyData = request.body;
@@ -8,7 +8,18 @@ export default {
         return productData;
     },
     async productList(){
-        const products=await product.findAll();
+        const products=await product.findAll({
+            include: [
+                {
+                  model: productImage,
+                  include: [
+                    {
+                      model: media, 
+                    },
+                  ],
+                },
+              ],
+        });
         return products;
     },
     async uploadProductImage(request) {

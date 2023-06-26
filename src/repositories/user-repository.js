@@ -41,6 +41,7 @@ export default {
       if (isPasswordMatch) {
         const { ...userData } = havingEmail.get();
         const token = jwt.createToken(userData)
+
         return { token, ...userData };
       }
     }
@@ -50,7 +51,9 @@ export default {
     let isPasswordMatch = '';
     if (password && hashPassword) {
       isPasswordMatch = await bcrypt.compare(password, hashPassword);
+      if (isPasswordMatch)
+        return isPasswordMatch
     }
-    return isPasswordMatch;
+
   }
 }

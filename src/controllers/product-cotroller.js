@@ -10,7 +10,9 @@ export default {
             if (result) {
                 let productId = result.dataValues.id;
                 for (let i = 0; i <= request.body.imageIdArray.length - 1; i++) {
-                    let imageId = request.body.imageIdArray[i];
+                    let imageId = request.body.imageIdArray[i]; 
+                    //console.log("88888888888")
+                    //console.log(imageId);
                     res = await productRepositories.uploadProductImage({ productId, imageId });
                 }
 
@@ -20,7 +22,7 @@ export default {
             }
             return response.status(httpStatus.BAD_REQUEST).json({ message: 'SOMETHING WENT WRONG.....' });
         } catch (error) {
-            console.log(error);
+            //console.log(error);
             next(error)
         }
     },

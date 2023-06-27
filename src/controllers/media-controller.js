@@ -98,7 +98,7 @@ export default {
             return res.status(HttpStatus.OK).json(result);
 
         } catch (err) {
-            console.log(next(err))
+            //console.log(next(err))
         }
     }
 }

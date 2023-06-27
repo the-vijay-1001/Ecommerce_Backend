@@ -3,7 +3,7 @@ const { product ,productImage,media } = models;
 export default {
     async uploadProduct(request) {
         const bodyData = request.body;
-        console.log(bodyData);
+        //console.log(bodyData);
         const productData = await product.create(bodyData);
         return productData;
     },
@@ -24,7 +24,7 @@ export default {
     },
     async uploadProductImage(request) {
         const {imageId } = request;
-        console.log(imageId);
+        //console.log(imageId);
         const productImages = await productImage.create(request);
         return productImages;
     },

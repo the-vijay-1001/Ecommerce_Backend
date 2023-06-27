@@ -1,21 +1,20 @@
-import multer from "multer";
-import path from "path";
-import fs from "fs";
+import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
+import repositories from '../repositories';
+import HttpStatus from 'http-status';
+const { mediaRepository } = repositories;
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         const { mediaType, mediaFor } = req.params;
-        const fileDir = path.join(
-            __dirname,
-            `../../public/uploads/${mediaType}/${mediaFor}/`,
-        );
-        if (!fs.existsSync(fileDir)) {
-            fs.mkdirSync(fileDir, { recursive: true }, (err) => {
+        const dirPath = path.join(__dirname, '../../public/uploads/' + mediaType + '/' + mediaFor);
+        if (!fs.existsSync(dirPath)) {
+            fs.mkdirSync(dirPath, { recursive: true }, (err) => {
                 throw Error(err);
             });
         }
-
-        cb(null, `public/uploads/${mediaType}/${mediaFor}/`);
+        cb(null, dirPath);
     },
     filename: (req, file, cb) => {
         const datetimestamp = Date.now();
@@ -28,47 +27,78 @@ const storage = multer.diskStorage({
 
 const upload = multer({
     storage,
-    fileFilter:  (req, file, callback) => {
+    fileFilter: (req, file, callback) => {
         const ext = path.extname(file.originalname);
         let fileFormats = [];
         if (req.params.mediaType === 'image') {
-          fileFormats = ['.png', '.jpg', '.gif', '.jpeg'];
+            fileFormats = ['.png', '.jpg', '.gif', '.jpeg'];
         } else if (req.params.mediaType === 'video') {
-          fileFormats = ['.mp4', '.mov', '.wmv', '.mp4'];
+            fileFormats = ['.mp4', '.mov', '.wmv', '.mp4'];
         } else if (req.params.mediaType === 'audio') {
-          fileFormats = ['.aac', '.m4a', '.mp3'];
+            fileFormats = ['.aac', '.m4a', '.mp3'];
         } else if (req.params.mediaType === 'file') {
-          fileFormats = ['.pdf', '.doc', '.docx'];
+            fileFormats = ['.pdf', '.doc', '.docx'];
         } else if (req.params.mediaType === 'media') {
-          fileFormats = [
-            '.png',
-            '.jpg',
-            '.gif',
-            '.aac',
-            '.m4a',
-            '.mp3',
-            '.jpeg',
-            '.pdf',
-            '.doc',
-            '.docx',
-            '.mp4',
-            '.mov',
-            '.wmv',
-          ];
+            fileFormats = [
+                '.png',
+                '.jpg',
+                '.gif',
+                '.aac',
+                '.m4a',
+                '.mp3',
+                '.jpeg',
+                '.pdf',
+                '.doc',
+                '.docx',
+                '.mp4',
+                '.mov',
+                '.wmv',
+                '.txt',
+            ];
         }
         if (fileFormats.indexOf(ext.toLowerCase()) === -1) {
-          return callback(
-            new Error(`Allowed file format ${fileFormats.toString()}.`),
-          );
+            return callback(
+                new Error(`Allowed file format ${fileFormats.toString()}.`),
+            );
         }
         callback(null, true);
-      }
-})
+    }
+});
 
 export default {
-    uploadFiles() {
-        upload.any('files')(req, res, (error) => {
-            console.log(error);
+    uploadFile(req, res, next) {
+       
+        upload.any('file')(req, res, async (error) => {
+            if (error instanceof multer.MulterError) {
+                if (error.code === 'LIMIT_FILE_SIZE') {
+                    error.message = utility.getMessage(
+                        req,
+                        false,
+                        'MEDIA_SIZE_VALIDATION',
+                    );
+                }
+                error.status = HttpStatus.BAD_REQUEST;
+                return next(error);
+            }
+
+            if (error) {
+                // An unknown error occurred when uploading.
+                error.status = HttpStatus.BAD_REQUEST;
+                return next(error);
+            }
+
+            next();
         })
+    },
+    async saveFile(req, res, next) {
+        try {
+            const result = await mediaRepository.saveMedia(req);
+            if (!result.status)
+                throw new Error(result.msg);
+            return res.status(HttpStatus.OK).json(result);
+
+        } catch (err) {
+            console.log(next(err))
+        }
     }
 }

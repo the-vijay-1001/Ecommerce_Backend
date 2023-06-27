@@ -1,5 +1,5 @@
-import authValidate from "./auth-middleware.js";
-import validateMiddleware from "./validate-middleware.js";
+import authValidate from './auth-middleware.js';
+import validateMiddleware from './validate-middleware.js';
 export default {
     authValidate,
     validateMiddleware

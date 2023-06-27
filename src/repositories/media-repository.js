@@ -1,22 +1,27 @@
-import httpStatus from "http-status";
-import media from "../models/media";
+import config from '../config';
+import models from '../models'
+
+const { media } = models;
 
 export default {
-    async saveFile(req) {
+    async saveMedia(req) {
         try {
-            const { files, param: { mediaType, mediaFor } } = req;
-            const result = await Promise.all(
-                files.map(async file => {
-                    return await media.create({
-                        name: file.filename,
-                        basePath: file.path,
-                        mediaFor,
-                        mediaType
-                    })
-                })
-            )
-            if(result)
-            return result.status(httpStatus.OK).json({status:true,msg:"file saved"})
-        } catch (err) { console.log(err) }
+            const { files, params } = req;
+            const file = files[0];
+            var basePath = `public\\uploads\\${params.mediaType}\\${params.mediaFor}\\${file.filename}`;
+            const result = await media.create({
+                name: file.filename,
+                mediaType: params.mediaType,
+                mediaFor: params.mediaFor,
+                basePath
+            })
+
+            const baseUrl = `${config.app.url}/${basePath}`
+
+            return { status: true, msg: 'Files Saved Successfully', baseUrl, id: result.dataValues.id }
+        } catch (err) {
+            console.log(err);
+            return { status: false, msg: 'Something went wrong !! Try again . . .' }
+        }
     }
 }

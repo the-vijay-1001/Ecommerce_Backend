@@ -47,5 +47,17 @@ export default {
         } catch (error) {
             next(error);
         }
+    },
+
+    async productRemoveById(request, response, next) {
+        try {
+            const result = await productRepositories.productRemoveById(request);
+            if (result) {
+                return response.status(httpStatus.OK).json({ result, message: "product removed successfully" });
+            }
+            return response.status(httpStatus.BAD_REQUEST).json({ message: "bad requesst" });
+        } catch (error) {
+            next(error);
+        }
     }
 }

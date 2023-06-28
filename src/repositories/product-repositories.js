@@ -1,6 +1,7 @@
 import models from "../models";
 const { product, productImage, media } = models;
 export default {
+  
   async uploadProduct(request) {
     const bodyData = request.body;
     const productData = await product.create(bodyData);
@@ -40,9 +41,16 @@ export default {
     return productList;
   },
 
+  async productRemoveById(request) {
+    const { productId } = request.body;
+    const productRemoved = await product.destroy({
+      where: { id: productId }
+    });
+    return productRemoved;
+  },
+
   async uploadProductImage(request) {
     const { imageId } = request;
-    console.log(imageId);
     const productImages = await productImage.create(request);
     return productImages;
   },

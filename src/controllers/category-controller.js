@@ -11,6 +11,8 @@ export default {
                 let imageId = request.body.imageId;
                 const res = await categoryRepositories.uploadCategoryImage({ categoryId, imageId });
                 if (res) {
+                    console.log("this is response");
+                    console.log(res);
                     return response.status(httpStatus.OK).json({ result, message: 'Category Added........' });
                 }
             }

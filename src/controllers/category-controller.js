@@ -21,5 +21,17 @@ export default {
         } catch (error) {
             next(error)
         }
+    },
+    async categoryList(request,response,next){
+        try{
+            const result= await categoryRepositories.categoryList(request);
+            if (result) {
+                return response.status(httpStatus.OK).json({ result, message: "Category fetch successfully" });
+            }
+            return response.status(httpStatus.BAD_REQUEST).json({ message: "bad requesst" });
+        }
+        catch(error){
+            console.log(error);
+        }
     }
 }

@@ -23,10 +23,10 @@ export class Bootstrap {
         const { sequelize } = models;
         sequelize.authenticate()
             .then(() => {
-                console.log('database connected');
+                //console.log('database connected');
                 sequelize.sync()
                     .then(() => {
-                        console.log('Database is sync')
+                        //console.log('Database is sync')
                     })
                     .catch(err => {
                         console.log(err);
@@ -43,7 +43,7 @@ export class Bootstrap {
 
     start() {
         this.app.listen(process.env.PORT, () => {
-            console.log('Server Started on 3001');
+            //console.log('Server Started on 3001');
         })
     }
 }

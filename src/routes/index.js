@@ -6,6 +6,7 @@ import user from "./user.js"
 import product from "./product.js";
 import HttpStatus from 'http-status';
 import cart from './cart.js';
+import category from './category.js';
 
 const router = Router();
 const register = (app) => {
@@ -16,10 +17,11 @@ const register = (app) => {
         media,
         user,
         product,
+        category,
         cart
     ])
     app.use((error, req, res, next) => {
-        console.log(error)
+        //console.log(error)
        return  res.status(HttpStatus.BAD_REQUEST).json({
             status: false,
             errorMsg: error.message

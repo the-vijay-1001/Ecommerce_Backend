@@ -17,8 +17,8 @@ export default {
     async vendorSignin(request, response, next) {
         try {
             const data = await accoutnRepositories.vendorSignin(request);
-            console.log("fkdkljlk");
-            console.log(data);
+            //console.log("fkdkljlk");
+            //console.log(data);
             if (data?.token){
                 return response.status(HttpStatus.OK).json({ data, message: 'SIGNIN SUCCESSS......' });
             }

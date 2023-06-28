@@ -5,7 +5,7 @@ const authValidateRequest = (request, response, next) => {
         next();
     }
     else{
-        console.log('something went wrong')
+        //console.log('something went wrong')
     }
 
 }

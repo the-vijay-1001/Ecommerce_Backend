@@ -135,7 +135,7 @@ export default {
     },
     async forgotPassword(req) {
         try {
-            console.log(req.headers.host);
+            //console.log(req.headers.host);
             const forgotUser = await user.scope('admin').findOne({ where: { email: req.body.email } });
             req.forgotUser = forgotUser
             const token = await this.generatePasswordResetToken(req);

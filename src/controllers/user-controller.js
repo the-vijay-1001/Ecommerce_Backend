@@ -16,7 +16,7 @@ export default {
       if (result) {
         return res.status(httpStatus.OK).json({ message: "submitted", status: true });
       } else {
-        console.log(error);
+        //console.log(error);
         return res.status(httpStatus.BAD_REQUEST).json({ message: "bad request", status: false });
       }
     } catch (error) {

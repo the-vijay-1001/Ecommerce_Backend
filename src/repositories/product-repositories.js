@@ -1,7 +1,9 @@
 import models from "../models";
 const { product, productImage, media } = models;
+let clickCount = 0;
+
 export default {
-  
+
   async uploadProduct(request) {
     const bodyData = request.body;
     const productData = await product.create(bodyData);
@@ -37,6 +39,31 @@ export default {
           ],
         },
       ],
+      limit: 4
+    });
+
+    return productList;
+  },
+
+  async moreProductListById(request) {
+    const { vendorId, pre , next } = request.body;
+    console.log(pre+" "+next)
+    clickCount = pre;
+    const offset = (pre  * next );
+    const productList = await product.findAll({
+      where: { vendorId: vendorId },
+      include: [
+        {
+          model: productImage,
+          include: [
+            {
+              model: media,
+            },
+          ],
+        },
+      ],
+      limit: next,
+      offset: offset
     });
     return productList;
   },

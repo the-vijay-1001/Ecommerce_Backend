@@ -51,6 +51,18 @@ export default {
         }
     },
 
+    async moreProducts(request, response, next) {
+        try {
+            const result = await productRepositories.moreProductListById(request);
+            if (result) {
+                return response.status(httpStatus.OK).json({ result, message: "more product fetch successfully" });
+            }
+            return response.status(httpStatus.BAD_REQUEST).json({ message: "bad requesst" });
+        } catch (error) {
+            next(error);
+        }
+    },
+
     async productRemoveById(request, response, next) {
         try {
             const result = await productRepositories.productRemoveById(request);

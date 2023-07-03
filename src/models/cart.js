@@ -17,13 +17,16 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: new Date()
         }
     });
-    // Cart.belongsTo(models.User, {
-    //     foreignKey: "userId"
-    // });
+
     Cart.associate = (models) => {
-        Cart.hasOne(models.user, {
-            foreignKey: "userId"
+        Cart.belongsTo(models.user, {
+          foreignKey: "userId",
+          targetKey: "id",
         })
+        Cart.belongsToMany(models.product, {
+          through: models.cartitem,
+          foreignKey: "cartId",
+        });
     }
     return Cart;
 }

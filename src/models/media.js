@@ -30,10 +30,13 @@ module.exports = (sequelize, DataTypes) => {
     media.associate = (models) => {
         media.hasOne(models.productImage, {
             foreignKey: "imageId"
-        }),
-            media.hasOne(models.categoryImage, {
-                foreignKey: "imageId"
-            })
+        })
+    }
+
+    media.associate = (models) => {
+        media.hasOne(models.category, {
+            foreignKey: "imageId"
+        })
     }
     return media;
 }

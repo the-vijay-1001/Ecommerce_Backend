@@ -59,6 +59,13 @@ module.exports = (sequelize, DataTypes) => {
         }
     });
 
+    User.associate = (models) => {
+        User.hasOne(models.cart, {
+            foreignKey: 'userId',
+            targetKey: 'id',
+        });   
+    }
+
     User.addScope('customers',{
         where:{
             role:constant.common.ROLE.USER

@@ -4,10 +4,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false
         },
-        productId: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },
+      
         createdAt: {
             type: DataTypes.DATE,
             defaultValue: new Date()
@@ -26,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
         Cart.belongsToMany(models.product, {
           through: models.cartitem,
           foreignKey: "cartId",
+          unique: true,
         });
     }
     return Cart;

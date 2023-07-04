@@ -47,7 +47,6 @@ export default {
 
   async moreProductListById(request) {
     const { vendorId, pre , next } = request.body;
-    console.log(pre+" "+next)
     clickCount = pre;
     const offset = (pre  * next );
     const productList = await product.findAll({

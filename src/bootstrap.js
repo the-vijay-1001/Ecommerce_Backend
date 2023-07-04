@@ -23,10 +23,10 @@ export class Bootstrap {
         const { sequelize } = models;
         sequelize.authenticate()
             .then(() => {
-                //console.log('database connected');
+                console.log('database connected');
                 sequelize.sync()
                     .then(() => {
-                        //console.log('Database is sync')
+                        console.log('Database is sync')
                     })
                     .catch(err => {
                         console.log(err);

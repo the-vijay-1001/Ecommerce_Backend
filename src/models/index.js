@@ -11,7 +11,8 @@ const sequelize = new Sequelize(dbConfig.db, dbConfig.user, dbConfig.password, {
     host: dbConfig.host,
     port: dbConfig.port,
     timezone: dbConfig.timezone,
-    dialect: 'mysql'
+    dialect: 'mysql',
+    logging:false
 })
 
 

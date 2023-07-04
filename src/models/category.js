@@ -4,6 +4,14 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         },
+        vendorId: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        imageId: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
         createdAt: {
             type: DataTypes.DATE,
             defaultValue: new Date()
@@ -13,16 +21,13 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: new Date()
         }
     });
-    Category.associate = (models) => {
-        Category.hasMany(models.product, {
-            foreignKey: "category"
+
+    Category.associat = (models) => {
+        Category.hasOne(models.media, {
+            foreignKey: "imageId"
         })
-    },
-    Category.associate = (models) => {
-        Category.hasOne(models.categoryImage, {
-          foreignKey: "categoryId"
-        });
-      };
-      
+    }
+
+
     return Category;
 }

@@ -20,6 +20,7 @@ export default {
 
         } catch (error) {
             next(error)
+            
         }
     },
     async categoryList(request,response,next){

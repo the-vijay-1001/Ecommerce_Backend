@@ -4,10 +4,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false
         },
-        productId: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },
+      
         createdAt: {
             type: DataTypes.DATE,
             defaultValue: new Date()
@@ -17,13 +14,17 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: new Date()
         }
     });
-    // Cart.belongsTo(models.User, {
-    //     foreignKey: "userId"
-    // });
+
     Cart.associate = (models) => {
-        Cart.hasOne(models.user, {
-            foreignKey: "userId"
+        Cart.belongsTo(models.user, {
+          foreignKey: "userId",
+          targetKey: "id",
         })
+        Cart.belongsToMany(models.product, {
+          through: models.cartitem,
+          foreignKey: "cartId",
+          unique: true,
+        });
     }
     return Cart;
 }

@@ -14,7 +14,7 @@ export default {
     try {
       const result = await userRepository.signup(req);
       if (result) {
-        return res.status(httpStatus.OK).json({ message: "submitted", status: true });
+        return res.status(httpStatus.OK).json({ result,message: "submitted", status: true });
       } else {
         //console.log(error);
         return res.status(httpStatus.BAD_REQUEST).json({ message: "bad request", status: false });

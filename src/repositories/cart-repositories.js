@@ -3,12 +3,12 @@ const { cart, cartitem } = models;
 
 export default {
   async addToCartProduct(request) {
-    const t = await models.sequelize.transaction(); 
+    const t = await models.sequelize.transaction();
 
     try {
-      const cartProduct = await cart.create(request.body, { transaction: t });
-
       let userCart = await cart.findOne({ raw: true, where: { userId: request.body.userId }, transaction: t });
+      userCart = userCart ? userCart : await cart.create(request.body, { transaction: t });
+
 
       if (userCart) {
         let cartItem = await cartitem.findOne({
@@ -40,12 +40,12 @@ export default {
           cartId: newCart.id
         }, { transaction: t });
 
-        await t.commit(); 
+        await t.commit();
         return { message: "Item added in cart", status: true };
       }
     } catch (error) {
-      await t.rollback(); 
-      throw error; 
+      await t.rollback();
+      throw error;
     }
   },
 
@@ -53,11 +53,11 @@ export default {
     try {
       const { userId } = request.body;
       const carts = await cart.findAll({ where: { userId } });
-  
+
       if (carts.length === 0) {
         return { message: "User does not exist", status: false };
       }
-  
+
       return carts;
     } catch (error) {
       console.log(error);
@@ -80,7 +80,7 @@ export default {
     } catch (error) {
       throw error;
     }
-  },    
-  
+  },
+
 };
 

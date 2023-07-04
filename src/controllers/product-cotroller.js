@@ -11,8 +11,6 @@ export default {
                 let productId = result.dataValues.id;
                 for (let i = 0; i <= request.body.imageIdArray.length - 1; i++) {
                     let imageId = request.body.imageIdArray[i]; 
-                    //console.log("88888888888")
-                    //console.log(imageId);
                     res = await productRepositories.uploadProductImage({ productId, imageId });
                 }
 

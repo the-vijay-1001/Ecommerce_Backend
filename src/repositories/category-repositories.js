@@ -3,7 +3,9 @@ const { category, categoryImage, media } = models;
 export default {
     async addCategory(request) {
         const bodyData = request.body;
-        const categoryData = await category.create(bodyData);
+        const {categoryName , vendorId ,imageIdArray} = request.body;
+        const imageId = imageIdArray;
+        const categoryData = await category.create({categoryName , vendorId,imageId });
         return categoryData;
     },
 
@@ -13,18 +15,20 @@ export default {
         return categoryImg;
     },
     async categoryList(request){
-        const categoryData = await category.findAll({
-            include: [
-                {
-                  model: categoryImage,
-                  include: [
-                    {
-                      model: media,
-                    },
-                  ],
-                },
-              ],
-        });
+        const categoryData = await category.findAll(
+        //   {
+        //     include: [
+        //         {
+        //           model: categoryImage,
+        //           include: [
+        //             {
+        //               model: media,
+        //             },
+        //           ],
+        //         },
+        //       ],
+        // }
+        );
         return categoryData;
     }
 }

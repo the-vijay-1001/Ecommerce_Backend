@@ -21,7 +21,7 @@ const register = (app) => {
         cart
     ])
     app.use((error, req, res, next) => {
-        //console.log(error)
+        console.log(error)
        return  res.status(HttpStatus.BAD_REQUEST).json({
             status: false,
             errorMsg: error.message

@@ -2,7 +2,8 @@ module.exports = (sequelize, DataTypes) => {
     const Cart = sequelize.define("cart", {
         userId: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
+            unique:true
         },
       
         createdAt: {
@@ -23,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         Cart.belongsToMany(models.product, {
           through: models.cartitem,
           foreignKey: "cartId",
-          unique: true,
+        //   unique: true,
         });
     }
     return Cart;
